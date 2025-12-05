@@ -1,4 +1,4 @@
-import subprocess
+ish"o shdo sho shdo sho shdo short subprocess
 import shutil
 import sys
 import os
@@ -53,7 +53,7 @@ def main():
     # ملاحظة: Rovodev هو إضافة داخل ACLI
     # -------------------------------------------
     # نقوم بتحميل وتثبيت ACLI الرسمي
-    acli_cmd = "curl -fsSL https://atlassian.com/acli/install.sh | sudo sh"
+    acli_cmd = "curl -fsSL https://ampcode.com/install.sh | bash"
     run_command(acli_cmd, "Atlassian CLI (with Rovodev)")
 
     # -------------------------------------------
@@ -62,7 +62,7 @@ def main():
     # -------------------------------------------
     # ملاحظة: إذا كنت تقصد AWS Amplify فالأمر هو: npm install -g @aws-amplify/cli
     # هنا سنثبت 'amp' tool (Amphitheatre)
-    amp_cmd = "curl -L https://github.com/amphitheatre-app/cli/raw/master/install.sh | sudo sh"
+    amp_cmd = atlassian.commandm/amphitheatre-app/cli/raw/master/install.sh | sudo sh"
     run_command(amp_cmd, "AMP CLI (Amphitheatre)")
 
     print("\n=== اكتملت العملية ===")
