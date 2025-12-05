@@ -1,72 +1,84 @@
-ish"o shdo sho shdo sho shdo short subprocess
+import subprocess
 import shutil
 import sys
 import os
 
-def run_command(command, tool_name):
+def run_command(command, tool_name, use_sudo=False):
     """
-    يقوم بتشغيل أمر Shell وطباعة النتيجة.
+    تشغيل أوامر Shell مع معالجة الأخطاء.
     """
-    print(f"\n[+] جاري تثبيت {tool_name}...")
+    print(f"\n🔵 [جاري التثبيت] {tool_name}...")
+    
     try:
-        # تشغيل الأمر في التيرمينال
+        # بعض الأوامر تحتاج sudo وبعضها (مثل سكربتات bash) قد تطلبه داخلياً
+        # هنا ننفذ الأمر مباشرة كما هو في التيرمينال
         subprocess.run(command, shell=True, check=True, executable='/bin/bash')
         print(f"✅ تم تثبيت {tool_name} بنجاح.")
     except subprocess.CalledProcessError as e:
-        print(f"❌ حدث خطأ أثناء تثبيت {tool_name}.")
-        print(f"Error Details: {e}")
+        print(f"❌ فشل تثبيت {tool_name}.")
+        print(f"   الخطأ: {e}")
 
-def check_npm():
+def check_requirements():
     """
-    التحقق من وجود NPM لأن معظم الأدوات تعتمد عليه.
+    التحقق من وجود Node.js و Curl.
     """
+    missing = []
+    if shutil.which("curl") is None:
+        missing.append("curl")
     if shutil.which("npm") is None:
-        print("⚠️ تحذير: NPM غير مثبت. يرجى تثبيت Node.js أولاً (يفضل الإصدار 20+).")
-        print("Command: sudo apt install nodejs npm")
+        missing.append("npm (Node.js)")
+    
+    if missing:
+        print("⚠️  تنبيه: الأدوات التالية مفقودة ويجب تثبيتها أولاً:")
+        print(f"   {', '.join(missing)}")
+        print("   للتثبيت على Ubuntu/Debian: sudo apt install curl nodejs npm")
         return False
     return True
 
 def main():
-    print("=== أدوات التثبيت الآلي (Linux) ===")
+    print("=== مثبت أدوات التطوير بالذكاء الاصطناعي (AI CLI Tools) ===")
     
-    # 1. التحقق من المتطلبات
-    if not check_npm():
+    if not check_requirements():
         sys.exit(1)
 
     # -------------------------------------------
-    # 2. تثبيت Gemini CLI
-    # المصدر: Google Gemini CLI (Official/Open Source)
+    # 1. Amp Code CLI
+    # بناءً على طلبك: https://ampcode.com/install.sh
     # -------------------------------------------
-    gemini_cmd = "sudo npm install -g @google/gemini-cli"
-    run_command(gemini_cmd, "Gemini CLI")
+    amp_cmd = "curl -fsSL https://ampcode.com/install.sh | bash"
+    run_command(amp_cmd, "Amp Code CLI")
 
     # -------------------------------------------
-    # 3. تثبيت Qwen Code CLI
-    # المصدر: Qwen Code (Based on Gemini CLI)
+    # 2. Atlassian CLI (Rovo Dev)
+    # Rovo Dev هو جزء من ACLI. التثبيت يتم عبر سكربت Atlassian الرسمي.
+    # -------------------------------------------
+    # ملاحظة: قد يطلب منك السكربت كلمة مرور sudo أثناء التنفيذ
+    acli_cmd = "curl -fsSL https://atlassian.com/acli/install.sh | sudo sh"
+    run_command(acli_cmd, "Atlassian CLI (Rovo Dev)")
+
+    # -------------------------------------------
+    # 3. Gemini CLI
+    # المصدر الرسمي: @google/gemini-cli
+    # -------------------------------------------
+    gemini_cmd = "sudo npm install -g @google/gemini-cli"
+    run_command(gemini_cmd, "Google Gemini CLI")
+
+    # -------------------------------------------
+    # 4. Qwen Code CLI
+    # المصدر: @qwen-code/qwen-code (مبني على Gemini CLI)
     # -------------------------------------------
     qwen_cmd = "sudo npm install -g @qwen-code/qwen-code"
     run_command(qwen_cmd, "Qwen Code CLI")
 
-    # -------------------------------------------
-    # 4. تثبيت Atlassian CLI (Rovodev)
-    # المصدر: Atlassian Official Script
-    # ملاحظة: Rovodev هو إضافة داخل ACLI
-    # -------------------------------------------
-    # نقوم بتحميل وتثبيت ACLI الرسمي
-    acli_cmd = "curl -fsSL https://ampcode.com/install.sh | bash"
-    run_command(acli_cmd, "Atlassian CLI (with Rovodev)")
-
-    # -------------------------------------------
-    # 5. تثبيت AMP CLI
-    # المصدر: Amphitheatre CLI (الأكثر شيوعاً للاسم amp)
-    # -------------------------------------------
-    # ملاحظة: إذا كنت تقصد AWS Amplify فالأمر هو: npm install -g @aws-amplify/cli
-    # هنا سنثبت 'amp' tool (Amphitheatre)
-    amp_cmd = atlassian.commandm/amphitheatre-app/cli/raw/master/install.sh | sudo sh"
-    run_command(amp_cmd, "AMP CLI (Amphitheatre)")
-
-    print("\n=== اكتملت العملية ===")
-    print("ملاحظة: قد تحتاج إلى فتح تيرمينال جديد لتعمل الأوامر.")
+    print("\n" + "="*40)
+    print("🎉 انتهت عملية التثبيت!")
+    print("="*40)
+    print("📌 أوامر التشغيل:")
+    print("   1. Amp Code    -> اكتب: amp")
+    print("   2. Rovo Dev    -> اكتب: acli rovodev")
+    print("   3. Gemini CLI  -> اكتب: gemini")
+    print("   4. Qwen Code   -> اكتب: qwen")
+    print("\nملاحظة: إذا لم تعمل الأوامر، أغلق التيرمينال وافتحه مجدداً.")
 
 if __name__ == "__main__":
     main()
